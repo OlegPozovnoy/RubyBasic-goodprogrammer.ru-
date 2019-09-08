@@ -25,15 +25,13 @@ def print_status(letters, good_letters, bad_letters, errors)
     puts "\n" + get_words_for_print(letters, good_letters)
     puts "\nThe following letters are not in the word: " + bad_letters.to_s 
 
-    if (bad_letters.size==7)
-        abort "/nYou've made 7 errors, gamover"
-    elsif letters.uniq.size == good_letters.size
-        abort "/nCongrats, You've won!"
+    if letters.subset(good_letters)
+        abort "\nCongrats, You've won!"
     end
 end
 
 def get_user_input()
-    puts "/nEnter the next letter"
+    puts "\nEnter the next letter"
     return STDIN.gets.encode("UTF-8").chomp
 end
 
@@ -43,25 +41,40 @@ end
 def check_result(user_input, letters, good_letters, bad_letters)
 
     if (good_letters.include?(user_input) || bad_letters.include?(user_input))
-        puts "/nYou've already named this letter"
+        puts "\nYou've already named this letter"
         return 0
     end
 
     if (letters.include?(user_input))
         good_letters.push(user_input)
 
-        if (good_letters.size == letter.unique.size)
-            puts "/nYou've guessed the whole word"
+        letter_identity(user_input, good_letters)
+   
+        if (letters.subset?(good_letters))
+            puts "\nYou've guessed the whole word"
             return 1
         else
-            puts "/nThe secred word contains this letter!"
+            puts "\nThe secred word contains this letter!"
             return 0
         end    
     else
         bad_letters.push(user_input)
-        puts "/nThere's no such letter in the word"
+        letter_identity(user_input, bad_letters)
+        puts "\nThere's no such letter in the word"
         return -1
     end
 
 end
 
+
+def letter_identity(letter, array)
+    if (letter == "и")
+        array.push("й")
+    if (letter == "й")
+        array.push("и")
+    if (letter == "е")
+        array.push("ё")
+    if (letter == "ё")
+        array.push("е")
+
+end
