@@ -1,18 +1,18 @@
 puts "Курс доллара:"
-fxRate = gets.encode("UTF-8").to_f.round(2)
+fx_rate = gets.to_f.round(2)
 puts "Сколько у вас рублей?"
-rubles = gets.encode("UTF-8").to_f.round(2)
+rubles = gets.to_f.round(2)
 puts "Сколько у вас долларов?"
-usd = gets.encode("UTF-8").to_f.round(2)
+usd = gets.to_f.round(2)
 
 #Coputing the amount in USD to be bought to balance the portfolio
 #rounded to the nearest cent
-dUSD = (usd - (rubles/fxRate + usd)/2).round(2)
+diff_in_usd = ( (rubles/fx_rate - usd)/2).round(2)
 
-if (dUSD > 0)
-  puts "Вам надо купить " + dUSD.to_s + "$"
-elsif (dUSD < 0)
-  puts "Вам надо продать " + (-dUSD).to_s + "$"  
+if (diff_in_usd  > 0)
+  puts "Вам надо купить " + diff_in_usd.to_s + "$"
+elsif (diff_in_usd  < 0)
+  puts "Вам надо продать " + diff_in_usd.abs.to_s + "$"
 else
   puts "Поздравляем, портфель сбалансирован"
 end

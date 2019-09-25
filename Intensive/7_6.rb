@@ -2,24 +2,25 @@
 number = rand(16)
 
 puts "Загадано число от 0 до 15, отгадайте какое?"
-for i in 1..3
-  nextGuess = gets.to_i
-  if (number - nextGuess).abs >= 3
-    answer = "Холодно "
-  elsif (number == nextGuess)
+3.times do
+  next_guess = gets.to_i
+  
+  if (number - next_guess).abs >= 3
+    is_cold = "Холодно"
+  elsif (number == next_guess)
     puts "Ура, вы выиграли!"
-    abort
+    exit(0)
   else
-    answer = "Тепло "
+    is_cold = "Тепло"
   end
   
-  if (number > nextGuess)
-    answer += "(нужно больше)"
+  if number > next_guess
+    is_greater = "(нужно больше)"
   else
-    answer += "(нужно меньше)"
+    is_greater = "(нужно меньше)"
   end
-  puts answer
+
+  puts "#{is_cold} #{is_greater}"
 end
 
 puts "Было загадано число " + number.to_s
-
