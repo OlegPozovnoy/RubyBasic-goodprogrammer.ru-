@@ -25,13 +25,17 @@ def print_status(letters, good_letters, bad_letters, errors)
     puts "\n" + get_words_for_print(letters, good_letters)
     puts "\nThe following letters are not in the word: " + bad_letters.to_s 
 
-    if letters.subset(good_letters)
+    if (letters - good_letters).empty?
         abort "\nCongrats, You've won!"
     end
 end
 
 def get_user_input()
     puts "\nEnter the next letter"
+    letter = STDIN.gets
+    puts letter
+    puts letter.encode("UTF-8") 
+
     return STDIN.gets.encode("UTF-8").chomp
 end
 
@@ -45,12 +49,12 @@ def check_result(user_input, letters, good_letters, bad_letters)
         return 0
     end
 
-    if (letters.include?(user_input))
+    if (is_include(letters,user_input) )
         good_letters.push(user_input)
 
         letter_identity(user_input, good_letters)
    
-        if (letters.subset?(good_letters))
+        if (letters - good_letters).empty?
             puts "\nYou've guessed the whole word"
             return 1
         else
@@ -70,11 +74,24 @@ end
 def letter_identity(letter, array)
     if (letter == "и")
         array.push("й")
-    if (letter == "й")
+    elsif (letter == "й")
         array.push("и")
-    if (letter == "е")
+    elsif (letter == "е")
         array.push("ё")
-    if (letter == "ё")
+    elsif (letter == "ё")
         array.push("е")
+    end
+end
+
+
+def is_include(letters, user_input)
+    if (letters.include?("ё") && user_input == "е") ||
+        (letters.include?("е") && user_input == "ё")
+        (letters.include?("й") && user_input == "и")
+        (letters.include?("и") && user_input == "й")
+        return true
+    else
+        return letters.include?(user_input)
+    end
 
 end
