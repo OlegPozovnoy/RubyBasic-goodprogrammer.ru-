@@ -11,10 +11,7 @@ end
 def read_questions
   file_path = "9_2_questions.txt"
   if File.exist?(file_path)
-    f = File.new(file_path, "r:UTF-8")
-    lines = f.readlines
-    f.close
-    return lines
+    return File.readlines(file_path, :encoding => "UTF-8")
   else
     raise "Файл #{file_path} не найден"
   end
@@ -25,47 +22,45 @@ def read_results
 
   file_path = "9_2_results.txt"
   if File.exist?(file_path)
-    f = File.new(file_path, "r:UTF-8")
-    lines = f.readlines
-    f.close
-    lines.each{ |item|
+    File.readlines(file_path, :encoding => "UTF-8").each do |item|
       result = item.split('=>')
       results[result[0].to_i] = result[1]
-    }
+    end
     return results
   else
     raise "Файл #{file_path} не найден"
   end
 end
 
-#очки за вопросы
-answers = {"да" => 2, "иногда" => 1, "нет" => 0}
+question_tail = "(введите 2 если да, 1 если иногда, 0 если нет)"
+#Допустимый ввод пользователя
+answers = ["2", "1", "0"]
 
 #индексы вопросов, в которых ответ "да" означает коммуникабельность
-reverse_meaning = [4,9,10]
+reverse_meaning = [4, 9, 10]
 
 questions = read_questions
 results = read_results
 
 score = 0
 
-questions.each { |question|
-  puts question
-  answer = gets.encode("UTF-8").chomp
+questions.each_with_index do |question, index|
+  puts "#{question.chomp}\n#{question_tail}"
+  answer = gets.chomp
 
-  while !answers.keys.include?(answer)
-    puts "Некорректный ввод, допустимые варианты ответа " + answers.keys.to_s
+  until answers.include?(answer)
+    puts "Некорректный ввод, допустимые варианты ответа #{answers}"
     puts "Введите ответ заново"
-    answer = gets.encode("UTF-8").chomp
+    answer = gets.chomp
   end
-  score += reverse_meaning.include?(questions.index(question)) ? 2 - answers[answer] : answers[answer];
-}
+  score += reverse_meaning.include?(index) ? 2 - answer.to_i : answer.to_i
+end
 
 puts "Вы набрали #{score} очков"
 
-results.each_pair{|key, value|
+results.each_pair do |key, value|
   if key <= score
-    puts results[key]
+    puts value
     return
   end
-}
+end
