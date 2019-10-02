@@ -9,19 +9,16 @@ if (Gem.win_platform?)
 end
 
 def sklonyator(number, forms_0, forms_1, forms_2)
-  if !number.is_a? Integer
-    puts ("Первый аргумент не целое число, выполнение программы будет прекращено")
-    abort
-  elsif number < 0
-    puts ("С отрицательными и мнимыми числами не работаем, выполнение программы будет прекращено")
-    abort
+  if number < 0
+    return ("С отрицательными и мнимыми числами не работаем.")
   end
 
-  if number % 10 >= 5 || [0, *11..14].include?(number % 100)
+  last_digit = number % 10
+  if [0, *5..9].include?(last_digit) || (11..14).include?(number % 100)
     return "Вот вам #{number} #{forms_2}"
-  elsif number % 10 >=2 && number % 10 <= 4
+  elsif last_digit.between?(2, 4)
     return "Вот вам #{number} #{forms_1}"
-  elsif number % 10 == 1
+  elsif last_digit == 1
     return "Вот вам #{number} #{forms_0}"
   end
 end
@@ -29,6 +26,10 @@ end
 forms = ['крокодил', 'крокодила', 'крокодилов']
 
 puts "Сколько вам #{forms[2]}?"
-number = gets.encode("UTF-8").to_i
+number = gets.encode("UTF-8").strip
 
-puts "\n" + sklonyator(number, forms[0], forms[1], forms[2])
+if number.to_i.to_s.eql?(number)
+  puts "\n" + sklonyator(number.to_i, *forms)
+else
+  puts ("Введено не целое число")
+end

@@ -11,6 +11,6 @@ end
 puts "Пользователь, сколько Вам фактов о котах выдать?"
 num_of_facts = gets.to_i
 
-num_of_facts.times do
-  puts random_cat_fact
+num_of_facts.times do |i|
+  puts "#{i+1}.#{random_cat_fact}"
 end
